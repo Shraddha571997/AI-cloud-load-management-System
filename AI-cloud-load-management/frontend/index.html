@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI-Based Predictive Cloud Load Management</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f6f8;
+            padding: 20px;
+        }
+        h2 {
+            text-align: center;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            margin: 20px auto;
+            width: 70%;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #ccc;
+        }
+        button {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>AI-Based Predictive Cloud Load Management</h2>
+
+<div class="card">
+    <label>Enter Time Slot:</label>
+    <input type="number" id="time" value="12">
+    <button onclick="predictLoad()">Predict Load</button>
+
+    <h3 id="result"></h3>
+</div>
+
+<div class="card">
+    <canvas id="loadChart"></canvas>
+</div>
+
+<script>
+    async function predictLoad() {
+        const time = document.getElementById("time").value;
+        const response = await fetch(`http://127.0.0.1:5000/predict/${time}`);
+        const data = await response.json();
+
+        document.getElementById("result").innerHTML =
+            `Predicted CPU Load: ${data.predicted_cpu_load}% <br>
+             Scaling Action: <b>${data.action}</b>`;
+
+        drawChart(data.predicted_cpu_load);
+    }
+
+    function drawChart(predicted) {
+        const ctx = document.getElementById('loadChart').getContext('2d');
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Predicted Load'],
+                datasets: [{
+                    label: 'CPU Usage (%)',
+                    data: [predicted]
+                }]
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
