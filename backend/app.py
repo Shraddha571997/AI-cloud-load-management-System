@@ -837,4 +837,4 @@ def ratelimit_handler(e):
     return jsonify({'message': 'Rate limit exceeded', 'retry_after': str(e.retry_after)}), 429
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5000, use_reloader=False)
