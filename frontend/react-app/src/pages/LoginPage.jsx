@@ -15,7 +15,7 @@ const LoginPage = () => {
     // Dual-Mode State Variables
     const [loginMode, setLoginMode] = useState('otp'); // 'password' or 'otp'
     const [otpStep, setOtpStep] = useState(1); // 1: Enter Email, 2: Enter Code
-    const [otpEmail, setOtpEmail] = useState('shraddha.605@gmail.com');
+    const [otpEmail, setOtpEmail] = useState('shraddha.sg605@gmail.com');
     const [otpCode, setOtpCode] = useState('');
 
     const onSubmitPassword = async (data) => {
