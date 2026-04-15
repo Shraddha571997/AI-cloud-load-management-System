@@ -43,8 +43,9 @@ def send_async_email(app, msg):
     with app.app_context():
         try:
             mail.send(msg)
+            print(f"[MAIL] Successfully sent OTP email to {msg.recipients[0]}")
         except Exception as e:
-            print(f"Mail failed to send (Dummy bypass): {e}")
+            print(f"[MAIL ERROR] Failed to send email: {e}")
 limiter = Limiter(
     key_func=get_remote_address,
     default_limits=["2000 per day", "500 per hour"]
@@ -182,12 +183,12 @@ def send_otp():
                           recipients=[email])
             msg.body = f"Your one-time password (OTP) to login is: {otp_code}\n\nThis code will expire securely in 5 minutes."
             
-            # For local testing without SMTP configured:
-            print(f"\n[{datetime.utcnow()}] OTP FOR {email}: {otp_code}\n")
+            # Output to server console for debugging if SMTP drops it
+            print(f"\n[{datetime.utcnow()}] OTP generated FOR {email}\n")
             
             Thread(target=send_async_email, args=(app, msg)).start()
             
-        return jsonify({'message': f'OTP dispatched! (Demo Code: {otp_code})'}), 200
+        return jsonify({'message': 'OTP securely dispatched to your email!'}), 200
     except Exception as e:
         print(f"[ERROR] Send OTP exception: {e}")
         return jsonify({'message': 'Server error sending OTP'}), 500
