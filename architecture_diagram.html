@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>System Architecture Diagram – AI-Based Predictive Cloud Load Management System</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    background: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 30px 20px 60px;
+    min-height: 100vh;
+  }
+
+  .page {
+    width: 1200px;
+    background: #fff;
+    border: 2px solid #333;
+    padding: 28px 32px 36px;
+  }
+
+  /* ── Title ── */
+  .diagram-title {
+    text-align: center;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border-bottom: 2.5px solid #222;
+    padding-bottom: 10px;
+    margin-bottom: 22px;
+    color: #111;
+  }
+
+  /* ── Layer wrapper ── */
+  .layer {
+    display: flex;
+    align-items: stretch;
+    border: 2px solid #333;
+    margin-bottom: 0;
+  }
+  .layer + .layer { border-top: none; }
+
+  /* Label strip on the left */
+  .layer-label {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #fff;
+    min-width: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Layer-specific colours */
+  .layer-1 .layer-label { background: #2c5f8a; }
+  .layer-2 .layer-label { background: #3a6b35; }
+  .layer-3 .layer-label { background: #7a4e1a; }
+  .layer-4 .layer-label { background: #5a2d82; }
+
+  /* Layer body */
+  .layer-body {
+    flex: 1;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  /* ── Generic box ── */
+  .box {
+    border: 1.8px solid #333;
+    background: #fafafa;
+    padding: 6px 10px;
+    font-size: 11.5px;
+    color: #111;
+    line-height: 1.55;
+  }
+  .box-title {
+    font-weight: 700;
+    font-size: 11.5px;
+    margin-bottom: 3px;
+    color: #111;
+    letter-spacing: 0.2px;
+  }
+  .box-sub {
+    font-size: 10.5px;
+    color: #333;
+    margin-left: 10px;
+  }
+  .box-sub::before { content: "• "; }
+
+  /* Tech strip */
+  .tech-strip {
+    border: 1.5px dashed #555;
+    background: #f4f4f4;
+    padding: 5px 10px;
+    font-size: 10.5px;
+    color: #444;
+    letter-spacing: 0.3px;
+  }
+  .tech-strip span { font-weight: 600; color: #222; margin-right: 2px; }
+
+  /* ── Horizontal flex row ── */
+  .row { display: flex; gap: 10px; align-items: stretch; }
+  .row .box { flex: 1; }
+
+  /* ── Arrow between layers ── */
+  .arrow-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 22px;
+    position: relative;
+    background: #fff;
+    z-index: 1;
+  }
+  .arrow-down {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+  .arrow-down .shaft {
+    width: 2px;
+    height: 10px;
+    background: #333;
+  }
+  .arrow-down .head {
+    width: 0; height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 8px solid #333;
+  }
+
+  /* ── Layer 1: Presentation ── */
+  .l1-body { background: #eef4fb; }
+
+  /* ── Layer 2: Application ── */
+  .l2-body { background: #f0f5ee; }
+  .module-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1.4fr 1.8fr;
+    gap: 10px;
+  }
+  .module-grid-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1.5fr;
+    gap: 10px;
+    margin-top: 0;
+  }
+  .module-box {
+    border: 1.8px solid #333;
+    background: #fff;
+    padding: 7px 10px;
+  }
+  .module-box .box-title {
+    font-size: 11px;
+    font-weight: 700;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 3px;
+    margin-bottom: 5px;
+    color: #111;
+  }
+
+  /* ── Layer 3: Data ── */
+  .l3-body { background: #fdf5ea; }
+  .data-grid {
+    display: grid;
+    grid-template-columns: 2.2fr 1fr 1.4fr;
+    gap: 10px;
+  }
+  .mongo-collections {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-top: 6px;
+  }
+  .collection-box {
+    border: 1.5px solid #555;
+    background: #fefefe;
+    padding: 4px 8px;
+    font-size: 10.5px;
+    color: #222;
+    text-align: center;
+  }
+
+  /* ── Layer 4: Server ── */
+  .l4-body { background: #f5eefb; }
+  .server-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+  }
+  .server-box {
+    border: 1.8px solid #333;
+    background: #fff;
+    padding: 8px 10px;
+    text-align: center;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #111;
+  }
+  .server-box .port {
+    font-size: 10px;
+    font-weight: 400;
+    color: #555;
+    margin-top: 2px;
+  }
+
+  /* ── Dashed connections section ── */
+  .connections-section {
+    margin-top: 20px;
+    border: 1.8px solid #888;
+    background: #f9f9f9;
+    padding: 12px 16px;
+  }
+  .connections-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 8px;
+    color: #222;
+    border-bottom: 1px solid #bbb;
+    padding-bottom: 4px;
+  }
+  .conn-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10.5px;
+  }
+  .conn-table td {
+    padding: 3px 8px;
+    border: 1px solid #ccc;
+    color: #222;
+    vertical-align: middle;
+  }
+  .conn-table td:first-child { font-weight: 600; width: 38%; background: #f0f0f0; }
+  .conn-table td:last-child { color: #555; }
+  .arrow-symbol { font-size: 13px; font-weight: 700; color: #333; }
+
+  /* ── Footer ── */
+  .footer {
+    margin-top: 12px;
+    text-align: center;
+    font-size: 9.5px;
+    color: #888;
+    letter-spacing: 0.3px;
+  }
+
+  /* Print */
+  @media print {
+    body { background: #fff; padding: 0; }
+    .page { border: none; width: 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ═══════════════════════════════════════════════ TITLE -->
+  <div class="diagram-title">
+    System Architecture Diagram – AI-Based Predictive Cloud Load Management System
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ LAYER 1: PRESENTATION -->
+  <div class="layer layer-1">
+    <div class="layer-label">Presentation Layer</div>
+    <div class="layer-body l1-body">
+
+      <div class="row">
+        <div class="box" style="max-width:180px; text-align:center; background:#e8f0f8; font-weight:600; font-size:11.5px;">
+          🌐&nbsp; Web Browser
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="box" style="background:#dce8f5;">
+          <div class="box-title">React Frontend</div>
+          <div style="display:flex; gap:10px; margin-top:4px;">
+            <div style="flex:1; border:1.2px solid #aaa; background:#fff; text-align:center; padding:4px 6px; font-size:11px; font-weight:600;">📊 Dashboard</div>
+            <div style="flex:1; border:1.2px solid #aaa; background:#fff; text-align:center; padding:4px 6px; font-size:11px; font-weight:600;">🔐 Login</div>
+            <div style="flex:1; border:1.2px solid #aaa; background:#fff; text-align:center; padding:4px 6px; font-size:11px; font-weight:600;">📄 Reports</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tech-strip">
+        <span>Technologies:</span>&nbsp; React.js &nbsp;|&nbsp; Axios &nbsp;|&nbsp; Recharts &nbsp;|&nbsp; JWT
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Arrow -->
+  <div class="arrow-row"><div class="arrow-down"><div class="shaft"></div><div class="head"></div></div></div>
+
+  <!-- ═══════════════════════════════════════════════ LAYER 2: APPLICATION -->
+  <div class="layer layer-2">
+    <div class="layer-label">Application Layer</div>
+    <div class="layer-body l2-body">
+
+      <!-- Top row: Core API | Auth | AI -->
+      <div class="module-grid">
+
+        <div class="module-box">
+          <div class="box-title">Core API Layer</div>
+          <div class="box-sub" style="margin-left:0;">Flask API Server</div>
+          <div style="font-size:10px; color:#666; margin-top:2px; margin-left:10px;">REST API Endpoints</div>
+        </div>
+
+        <div class="module-box">
+          <div class="box-title">Authentication Module</div>
+          <div class="box-sub">Login / Register</div>
+          <div class="box-sub">JWT Authentication</div>
+          <div class="box-sub">Email OTP Verification</div>
+        </div>
+
+        <div class="module-box">
+          <div class="box-title">AI &amp; Processing Module</div>
+          <div class="box-sub">ML Prediction (RandomForest)</div>
+          <div class="box-sub">Real-Time Monitoring (CPU, Memory via psutil)</div>
+          <div class="box-sub">Anomaly Detection</div>
+        </div>
+
+      </div>
+
+      <!-- Bottom row: Decision | Scheduler | Notification | Admin -->
+      <div class="module-grid-bottom">
+
+        <div class="module-box">
+          <div class="box-title">Decision Layer</div>
+          <div style="font-size:10px; font-weight:600; margin-bottom:3px; color:#333;">Scaling Engine</div>
+          <div class="box-sub">Maintain</div>
+          <div class="box-sub">Scale Up</div>
+          <div class="box-sub">Scale Down</div>
+          <div class="box-sub">Aggressive Scale</div>
+        </div>
+
+        <div class="module-box">
+          <div class="box-title">Automation Layer</div>
+          <div style="font-size:10px; font-weight:600; margin-bottom:3px; color:#333;">Scheduler Service</div>
+          <div class="box-sub">Autopilot via APScheduler</div>
+          <div class="box-sub">Cron-based Triggers</div>
+        </div>
+
+        <div class="module-box">
+          <div class="box-title">Notification Module</div>
+          <div style="font-size:10px; font-weight:600; margin-bottom:3px; color:#333;">Alert System</div>
+          <div class="box-sub">Email via Flask-Mail</div>
+          <div class="box-sub">Load Threshold Alerts</div>
+        </div>
+
+        <div class="module-box">
+          <div class="box-title">Admin Module</div>
+          <div class="box-sub">User Management</div>
+          <div class="box-sub">Model Retraining</div>
+          <div class="box-sub">System Monitoring</div>
+        </div>
+
+      </div>
+
+      <div class="tech-strip">
+        <span>Technologies:</span>&nbsp; Flask (Python) &nbsp;|&nbsp; scikit-learn &nbsp;|&nbsp; APScheduler &nbsp;|&nbsp; Flask-Mail &nbsp;|&nbsp; psutil &nbsp;|&nbsp; PyJWT
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Arrow -->
+  <div class="arrow-row"><div class="arrow-down"><div class="shaft"></div><div class="head"></div></div></div>
+
+  <!-- ═══════════════════════════════════════════════ LAYER 3: DATA -->
+  <div class="layer layer-3">
+    <div class="layer-label">Data Layer</div>
+    <div class="layer-body l3-body">
+
+      <div class="data-grid">
+
+        <!-- MongoDB -->
+        <div class="module-box">
+          <div class="box-title">🗄️&nbsp; MongoDB Database</div>
+          <div class="mongo-collections">
+            <div class="collection-box">Users Collection</div>
+            <div class="collection-box">Load Predictions</div>
+            <div class="collection-box">Audit Logs</div>
+            <div class="collection-box">System Metrics</div>
+            <div class="collection-box" style="grid-column: span 2;">Scheduler Config</div>
+          </div>
+        </div>
+
+        <!-- ML Model Storage -->
+        <div class="module-box">
+          <div class="box-title">🤖&nbsp; ML Model Storage</div>
+          <div style="margin-top: 8px; border: 1.5px dashed #888; background:#fffbf0; padding:7px 10px; text-align:center;">
+            <div style="font-size:11px; font-weight:700; color:#222;">load_model.pkl</div>
+            <div style="font-size:10px; color:#555; margin-top:3px;">Trained RandomForest Model</div>
+          </div>
+        </div>
+
+        <!-- Data Operations -->
+        <div class="module-box">
+          <div class="box-title">⚙️&nbsp; Data Operations</div>
+          <div class="box-sub">Store Predictions</div>
+          <div class="box-sub">Fetch Analytics</div>
+          <div class="box-sub">Export CSV</div>
+          <div class="box-sub">Export PDF Reports</div>
+          <div class="box-sub">Query Audit Logs</div>
+        </div>
+
+      </div>
+
+      <div class="tech-strip">
+        <span>Technologies:</span>&nbsp; MongoDB &nbsp;|&nbsp; PyMongo &nbsp;|&nbsp; pickle / joblib &nbsp;|&nbsp; pandas &nbsp;|&nbsp; ReportLab (PDF)
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Arrow -->
+  <div class="arrow-row"><div class="arrow-down"><div class="shaft"></div><div class="head"></div></div></div>
+
+  <!-- ═══════════════════════════════════════════════ LAYER 4: SERVER -->
+  <div class="layer layer-4">
+    <div class="layer-label">Server Layer</div>
+    <div class="layer-body l4-body">
+
+      <div class="server-grid">
+        <div class="server-box">
+          🖥️ Flask Server
+          <div class="port">Port 5000 &nbsp;|&nbsp; Python Backend</div>
+        </div>
+        <div class="server-box">
+          ⚡ React Dev Server
+          <div class="port">Port 5173 &nbsp;|&nbsp; Vite / Node.js</div>
+        </div>
+        <div class="server-box">
+          🍃 MongoDB Server
+          <div class="port">Port 27017 &nbsp;|&nbsp; Local / Atlas</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ DATA FLOW CONNECTIONS -->
+  <div class="connections-section">
+    <div class="connections-title">Data Flow &amp; Key Connections</div>
+    <table class="conn-table">
+      <tr>
+        <td>Presentation Layer <span class="arrow-symbol">→</span> Application Layer</td>
+        <td>React Frontend sends HTTP requests (Axios) to Flask REST API via JSON.</td>
+      </tr>
+      <tr>
+        <td>Application Layer <span class="arrow-symbol">→</span> Data Layer</td>
+        <td>Flask API reads/writes to MongoDB via PyMongo for users, predictions, logs &amp; metrics.</td>
+      </tr>
+      <tr>
+        <td>ML Module <span class="arrow-symbol">⟷</span> ML Model File</td>
+        <td>ML Prediction Module loads <em>load_model.pkl</em> at runtime; Admin triggers retraining &amp; overwrites the file.</td>
+      </tr>
+      <tr>
+        <td>Scheduler Service <span class="arrow-symbol">→</span> ML Prediction Module</td>
+        <td>APScheduler fires cron jobs to invoke ML Prediction, triggering Scaling Engine decisions automatically.</td>
+      </tr>
+      <tr>
+        <td>Alert System <span class="arrow-symbol">→</span> Email (SMTP)</td>
+        <td>Flask-Mail dispatches email alerts when CPU/Memory thresholds are breached or anomalies are detected.</td>
+      </tr>
+      <tr>
+        <td>Scaling Engine <span class="arrow-symbol">→</span> Decision Output</td>
+        <td>Outputs one of: <strong>Maintain / Scale Up / Scale Down / Aggressive Scale</strong> based on ML prediction score.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="footer">
+    MCA Project Documentation &nbsp;·&nbsp; AI-Based Predictive Cloud Load Management System &nbsp;·&nbsp; Architecture Diagram v1.0
+  </div>
+
+</div>
+</body>
+</html>

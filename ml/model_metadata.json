@@ -1,0 +1,16 @@
+{
+  "trained_at": "2026-01-18T03:41:19.896347",
+  "data_rows": 10,
+  "features": [
+    "time"
+  ],
+  "model": "RandomForestRegressor",
+  "hyperparameters": {
+    "n_estimators": 200,
+    "random_state": 42
+  },
+  "metrics": {
+    "mse": 27.99625000000002,
+    "r2_score": 0.0
+  }
+}
